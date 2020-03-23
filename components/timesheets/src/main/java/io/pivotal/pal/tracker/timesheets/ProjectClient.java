@@ -17,7 +17,6 @@ public class ProjectClient {
     }
 
     @HystrixCommand(commandKey = "getProject",
-                    threadPoolKey = "getProjectThreadPool",
                     fallbackMethod = "getProjectFromCache")
     public ProjectInfo getProject(long projectId) {
         ProjectInfo projectInfo = restOperations.getForObject(endpoint + "/projects/" + projectId, ProjectInfo.class);
@@ -27,8 +26,7 @@ public class ProjectClient {
         return projectInfo;
     }
 
-    @HystrixCommand(commandKey = "getProjectFromCache",
-            threadPoolKey = "getProjectCacheThreadPool")
+    @HystrixCommand(commandKey = "getProjectFromCache")
     public ProjectInfo getProjectFromCache(long projectId) {
         return projectClientCache.get(projectId);
     }
